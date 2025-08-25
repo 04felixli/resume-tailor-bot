@@ -1,4 +1,4 @@
-import './App.css';
+import "./App.css";
 import Header from "./components/Header";
 import UploadRow from "./components/UploadRow";
 import { StateProvider, useStateContext } from "./contexts/StateContext";
@@ -6,6 +6,9 @@ import FiltersGrid from "./components/FiltersGrid";
 import DragAndDrop from "./components/DragAndDrop";
 import JDInput from "./components/JDInput";
 import Response from "./components/Response";
+import Skills from "./components/Skills";
+import Experiences from "./components/Experiences";
+import Projects from "./components/Projects";
 
 export default function App() {
   return (
@@ -23,7 +26,11 @@ function AppContent() {
       <Header />
       <main className="mx-auto max-w-7xl px-4 py-6 md:py-10">
         <section className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 shadow-sm p-4 md:p-6">
-          <UploadRow />
+          {/* <UploadRow /> */}
+
+          <Skills />
+          <Experiences />
+          <Projects />
           <FiltersGrid />
 
           {error && (
@@ -37,7 +44,7 @@ function AppContent() {
             </div>
           )}
 
-          <DragAndDrop />
+          {/* <DragAndDrop /> */}
         </section>
 
         <section className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">

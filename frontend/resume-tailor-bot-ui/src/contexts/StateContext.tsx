@@ -1,4 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from "react";
+import type {
+  BulletStyle,
+  Experience,
+  Projects,
+} from "../types/StateContextTypes";
 
 interface StateContextType {
   resumeFile: File | null;
@@ -17,15 +22,23 @@ interface StateContextType {
   setMessage: React.Dispatch<React.SetStateAction<string>>;
   error: string;
   setError: React.Dispatch<React.SetStateAction<string>>;
+  experiences: Experience[];
+  setExperiences: React.Dispatch<React.SetStateAction<Experience[]>>;
+  projects: Projects[];
+  setProjects: React.Dispatch<React.SetStateAction<Projects[]>>;
   onFiles: (files: FileList | null) => void;
   onDrop: (e: React.DragEvent<HTMLDivElement>) => void;
   onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
   clearAll: () => void;
   handleTailor: () => void;
   handleCopy: () => Promise<void>;
+  addExperience: () => void;
+  updateExperience: (id: string, updated: Experience) => void;
+  deleteExperience: (id: string) => void;
+  addProject: () => void;
+  updateProject: (id: string, updated: Projects) => void;
+  deleteProject: (id: string) => void;
 }
-
-type BulletStyle = "concise" | "balanced" | "detailed";
 
 const StateContext = createContext<StateContextType | undefined>(undefined);
 
@@ -38,6 +51,8 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
   const [bulletStyle, setBulletStyle] = useState<BulletStyle>("balanced");
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [experiences, setExperiences] = useState<Experience[]>([]);
+  const [projects, setProjects] = useState<Projects[]>([]);
 
   const onFiles = (files: FileList | null) => {
     if (!files || files.length === 0) return;
@@ -66,21 +81,65 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     setBulletStyle("balanced");
     setError("");
     setMessage("");
+    setExperiences([]);
   };
 
   const handleTailor = () => {
-  setMessage("Tailor action pressed. Wire this up to FastAPI endpoint.");
-  setTimeout(() => setMessage("") , 3000);
+    setMessage("Tailor action pressed. Wire this up to FastAPI endpoint.");
+    setTimeout(() => setMessage(""), 3000);
   };
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(responseText);
-  setMessage("Copied response to clipboard.");
-  setTimeout(() => setMessage("") , 1500);
+      setMessage("Copied response to clipboard.");
+      setTimeout(() => setMessage(""), 1500);
     } catch (e) {
       console.error("Copy failed", e);
     }
+  };
+
+  const addExperience = () => {
+    setExperiences((exps) => [
+      ...exps,
+      {
+        id: Math.random().toString(36).slice(2),
+        company: "",
+        role: "",
+        bullets: "",
+      },
+    ]);
+  };
+
+  const updateExperience = (id: string, updated: Experience) => {
+    setExperiences((exps) =>
+      exps.map((exp) => (exp.id === id ? updated : exp))
+    );
+  };
+
+  const deleteExperience = (id: string) => {
+    setExperiences((exps) => exps.filter((exp) => exp.id !== id));
+  };
+
+  const addProject = () => {
+    setProjects((projs) => [
+      ...projs,
+      {
+        id: Math.random().toString(36).slice(2),
+        name: "",
+        bullets: "",
+      },
+    ]);
+  };
+
+  const updateProject = (id: string, updated: Projects) => {
+    setProjects((projs) =>
+      projs.map((proj) => (proj.id === id ? updated : proj))
+    );
+  };
+
+  const deleteProject = (id: string) => {
+    setProjects((projs) => projs.filter((proj) => proj.id !== id));
   };
 
   const value: StateContextType = {
@@ -100,21 +159,28 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     setMessage,
     error,
     setError,
+    experiences,
+    setExperiences,
+    projects,
+    setProjects,
     onFiles,
     onDrop,
     onDragOver,
     clearAll,
     handleTailor,
     handleCopy,
+    addExperience,
+    updateExperience,
+    deleteExperience,
+    addProject,
+    updateProject,
+    deleteProject,
   };
 
   return (
-    <StateContext.Provider value={value}>
-      {children}
-    </StateContext.Provider>
+    <StateContext.Provider value={value}>{children}</StateContext.Provider>
   );
 };
-
 
 export function useStateContext() {
   const context = useContext(StateContext);
