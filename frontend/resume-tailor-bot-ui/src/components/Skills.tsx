@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import { X } from "lucide-react";
+import { useStateContext } from "../contexts/StateContext";
 
 export default function Skills() {
-  const [skills, setSkills] = useState<string[]>([]);
+  const { skills, setSkills } = useStateContext();
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 

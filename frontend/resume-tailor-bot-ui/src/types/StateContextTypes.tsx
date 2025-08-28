@@ -5,6 +5,8 @@ export type Experience = {
   company: string;
   role: string;
   bullets: string;
+  startDate?: string;
+  endDate?: string;
 };
 
 export type Projects = {

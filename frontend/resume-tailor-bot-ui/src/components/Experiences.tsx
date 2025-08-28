@@ -11,7 +11,7 @@ function ExperienceCard({
   onDelete: () => void;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 shadow-sm p-4 mb-4 relative">
+    <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 shadow-sm p-4 mb-4 relative flex flex-col">
       <button
         onClick={onDelete}
         className="absolute top-1 right-1 text-slate-400 hover:text-rose-500"
@@ -20,20 +20,64 @@ function ExperienceCard({
         &times;
       </button>
       <div className="mb-2 flex gap-3">
-        <input
-          type="text"
-          value={experience.company}
-          onChange={(e) => onChange({ ...experience, company: e.target.value })}
-          placeholder="Company Name"
-          className="flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
-        />
-        <input
-          type="text"
-          value={experience.role}
-          onChange={(e) => onChange({ ...experience, role: e.target.value })}
-          placeholder="Role/Title"
-          className="flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
-        />
+        <div className="flex flex-col w-[34%]">
+          <label className="text-xs text-slate-600 dark:text-slate-400 mb-1">
+            Company Name
+          </label>
+          <input
+            type="text"
+            value={experience.company}
+            onChange={(e) =>
+              onChange({ ...experience, company: e.target.value })
+            }
+            placeholder="Company Name"
+            className="flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+          />
+        </div>
+        <div className="flex flex-col w-[34%]">
+          <label className="text-xs text-slate-600 dark:text-slate-400 mb-1">
+            Start Date
+          </label>
+          <input
+            type="text"
+            value={experience.role}
+            onChange={(e) => onChange({ ...experience, role: e.target.value })}
+            placeholder="Role/Title"
+            className="flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+          />
+        </div>
+        <div className="flex flex-col w-[16%]">
+          <label className="text-xs text-slate-600 dark:text-slate-400 mb-1">
+            Start Date
+          </label>
+          <input
+            type="text"
+            value={experience.startDate || ""}
+            onChange={(e) =>
+              onChange({ ...experience, startDate: e.target.value })
+            }
+            placeholder="MM/YYYY"
+            pattern="^(0[1-9]|1[0-2])\/(19|20)\\d{2}$"
+            className="rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+            maxLength={7}
+          />
+        </div>
+        <div className="flex flex-col w-[16%]">
+          <label className="text-xs text-slate-600 dark:text-slate-400 mb-1">
+            End Date
+          </label>
+          <input
+            type="text"
+            value={experience.endDate || ""}
+            onChange={(e) =>
+              onChange({ ...experience, endDate: e.target.value })
+            }
+            placeholder="MM/YYYY"
+            pattern="^(0[1-9]|1[0-2])\/(19|20)\\d{2}$"
+            className="rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+            maxLength={7}
+          />
+        </div>
       </div>
       <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
         What did you do? (one bullet per line)

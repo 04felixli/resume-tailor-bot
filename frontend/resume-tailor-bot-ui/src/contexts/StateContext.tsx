@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import type {
   BulletStyle,
   Experience,
@@ -26,6 +26,8 @@ interface StateContextType {
   setExperiences: React.Dispatch<React.SetStateAction<Experience[]>>;
   projects: Projects[];
   setProjects: React.Dispatch<React.SetStateAction<Projects[]>>;
+  skills: string[];
+  setSkills: React.Dispatch<React.SetStateAction<string[]>>;
   onFiles: (files: FileList | null) => void;
   onDrop: (e: React.DragEvent<HTMLDivElement>) => void;
   onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
@@ -53,6 +55,13 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
   const [error, setError] = useState<string>("");
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [projects, setProjects] = useState<Projects[]>([]);
+  const [skills, setSkills] = useState<string[]>([]);
+
+  useEffect(() => {
+    console.log("Experiences:", experiences);
+    console.log("Projects:", projects);
+    console.log("Skills:", skills);
+  }, [experiences, projects, skills]);
 
   const onFiles = (files: FileList | null) => {
     if (!files || files.length === 0) return;
@@ -82,6 +91,8 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     setError("");
     setMessage("");
     setExperiences([]);
+    setProjects([]);
+    setSkills([]);
   };
 
   const handleTailor = () => {
@@ -163,6 +174,8 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     setExperiences,
     projects,
     setProjects,
+    skills,
+    setSkills,
     onFiles,
     onDrop,
     onDragOver,
