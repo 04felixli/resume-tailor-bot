@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # import routers
-from app.api.parse import router as parse_router
+from backend.app.api.tailor import router as tailor_router
 
 app = FastAPI(title="Resume Tailor API")
 
@@ -15,4 +15,4 @@ app.add_middleware(
 )
 
 # Mount feature routers
-app.include_router(parse_router)
+app.include_router(tailor_router)
