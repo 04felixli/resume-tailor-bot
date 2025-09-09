@@ -96,8 +96,66 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleTailor = () => {
-    setMessage("Tailor action pressed. Wire this up to FastAPI endpoint.");
-    setTimeout(() => setMessage(""), 3000);
+    // Build items array from experiences and projects
+    const items = [
+      ...experiences.map((exp) => ({
+        id: exp.id,
+        type: "experience",
+        company: exp.company,
+        role: exp.role,
+        name: null,
+        start: exp.startDate || null,
+        end: exp.endDate || null,
+        bullets: exp.bullets
+          ? exp.bullets
+              .split("\n")
+              .map((b) => b.trim())
+              .filter((b) => b)
+          : [],
+      })),
+      ...projects.map((proj) => ({
+        id: proj.id,
+        type: "project",
+        company: null,
+        role: null,
+        name: proj.name,
+        start: null,
+        end: null,
+        bullets: proj.bullets
+          ? proj.bullets
+              .split("\n")
+              .map((b) => b.trim())
+              .filter((b) => b)
+          : [],
+      })),
+    ];
+
+    const payload = {
+      job_description: jdText,
+      top_x: topK,
+      skills,
+      items,
+    };
+
+    // Call backend endpoint and print response
+    fetch("http://127.0.0.1:8000/api/tailor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Tailor response:", data);
+        setMessage("Tailor response received. See console.");
+        setTimeout(() => setMessage(""), 3000);
+      })
+      .catch((err) => {
+        console.error("Tailor error:", err);
+        setMessage("Tailor request failed.");
+        setTimeout(() => setMessage(""), 3000);
+      });
   };
 
   const handleCopy = async () => {

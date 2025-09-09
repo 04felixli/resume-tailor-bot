@@ -36,7 +36,7 @@ function ExperienceCard({
         </div>
         <div className="flex flex-col w-[34%]">
           <label className="text-xs text-slate-600 dark:text-slate-400 mb-1">
-            Start Date
+            Role/Title
           </label>
           <input
             type="text"
