@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # import routers
-from backend.app.api.tailor import router as tailor_router
+from app.api.tailor import router as tailor_router
 
 app = FastAPI(title="Resume Tailor API")
 

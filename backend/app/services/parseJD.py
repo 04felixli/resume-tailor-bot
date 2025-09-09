@@ -5,11 +5,11 @@ from typing import Dict, List, Tuple
 HEADERS = {
     "requirements": [
         r"requirements", r"qualifications", r"basic qualifications",
-        r"minimum qualifications", r"must[-\s]?have", r"what you bring",
+        r"minimum qualifications", r"must[-\s]?have", r"what you bring", r"required qualifications",
     ],
     "responsibilities": [
         r"responsibilities", r"duties", r"what you'?ll do", r"role",
-        r"your impact", r"day[-\s]?to[-\s]?day", r"key responsibilities",
+        r"your impact", r"day[-\s]?to[-\s]?day", r"key responsibilities", r"job responsibilities",
     ],
     "preferred": [
         r"preferred", r"preferred qualifications", r"nice to have",

@@ -36,6 +36,22 @@ def score_bullets_vs_jd_sections(
         S = S * w                     # broadcast scale by section importance
     best_section_idx = S.argmax(axis=1)
     bullet_scores = S.max(axis=1)
+
+    # Debug print: show similarity matrix with bullets and section texts
+    print("\n=== Similarity Matrix Debug ===")
+    print("Bullets:")
+    for i, b in enumerate(bullets):
+        print(f"[{i}] {b}")
+    print("\nSection Texts:")
+    for j, s in enumerate(section_texts):
+        print(f"[{j}] {s}")
+    print("\nSimilarity Scores:")
+    for i, b in enumerate(bullets):
+        scores = [f"{S[i, j]:.3f}" for j in range(len(section_texts))]
+        print(f"Bullet [{i}]: {b}")
+        print("Scores:", ", ".join(scores))
+    print("=== End Debug ===\n")
+
     return S, bullet_scores, best_section_idx
 
 def pick_top_items_from_scores(
@@ -64,8 +80,8 @@ def pick_top_items_from_scores(
     scored: List[Tuple[str, float]] = []
     for item_id, scores in per_item.items():
         scores.sort(reverse=True)
-        total = sum(scores[:per_item_cap])               # cap top-3 bullets
-        # it = items_by_id[item_id]
+        total = sum(scores[:per_item_cap]) / min(per_item_cap, len(scores))              # cap top-10 bullets
+        # print("Total: " + str(total) + " for: " + (items_by_id[item_id].name or items_by_id[item_id].company))        # it = items_by_id[item_id]
 
         # if recency_bonus_fn:
         #     total += recency_bonus_fn(it.get("start"), it.get("end"))  # tiny bump
@@ -75,13 +91,9 @@ def pick_top_items_from_scores(
 
         scored.append((item_id, total))
 
+    # After sorting and selecting top items:
     scored.sort(key=lambda x: x[1], reverse=True)
-    chosen = {iid for iid, _ in scored[:top_x]}
+    top_ids = [iid for iid, _ in scored[:top_x]]
+    out = [items_by_id[iid] for iid in top_ids]
 
-    # return full items (ALL original bullets) for the chosen ids
-    # keep original order for determinism
-    out = []
-    for iid in items_by_id.keys():
-        if iid in chosen:
-            out.append(items_by_id[iid])
     return out
