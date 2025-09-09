@@ -54,7 +54,7 @@ async def tailor(input: InputModel):
 
     _, bullet_scores, _ = score_bullets_vs_jd_sections(bullets, parsed_JD, None)
     print("Bullet scores:", bullet_scores)
-    top_items = pick_top_items_from_scores(bullet_scores, bullet_to_id, items_by_id, input.top_x, 200, 10)
+    top_items = pick_top_items_from_scores(bullet_scores, bullet_to_id, items_by_id, input.top_x, 10)
     # print("Top items:", top_items)
 
     # 1. Call function to split job description into sections

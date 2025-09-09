@@ -59,28 +59,30 @@ def pick_top_items_from_scores(
     bullet_to_id: List[str],     
     items_by_id: Dict[str, Item],
     top_x: int,
-    shortlist_k: int = 200,
     per_item_cap: int = 3,
     # recency_bonus_fn=None,
     # impact_bonus_fn=None,
 ) -> List[Item]:
     n = len(bullet_scores)
-    k = min(shortlist_k, n)
-
-    # indices of top-k bullets (high recall)
-    idx = np.argpartition(bullet_scores, -k)[-k:]
-    idx = idx[np.argsort(bullet_scores[idx])[::-1]]
 
     # collect scores per item
     per_item: Dict[str, List[float]] = {}
-    for i in idx:
+    for i in range(len(bullet_scores)):
         item_id = bullet_to_id[i]
         per_item.setdefault(item_id, []).append(float(bullet_scores[i]))
 
     scored: List[Tuple[str, float]] = []
     for item_id, scores in per_item.items():
-        scores.sort(reverse=True)
-        total = sum(scores[:per_item_cap]) / min(per_item_cap, len(scores))              # cap top-10 bullets
+        # Pair each score with its bullet
+        score_bullet_pairs = list(zip(scores, items_by_id[item_id].bullets))
+        score_bullet_pairs.sort(reverse=True, key=lambda x: x[0])  # Sort by score descending
+
+        # Unpack sorted scores and bullets
+        sorted_scores = [pair[0] for pair in score_bullet_pairs]
+        sorted_bullets = [pair[1] for pair in score_bullet_pairs]
+
+        total = sum(sorted_scores[:per_item_cap]) / min(per_item_cap, len(sorted_scores))              # cap top-10 bullets
+        items_by_id[item_id].bullets = sorted_bullets
         # print("Total: " + str(total) + " for: " + (items_by_id[item_id].name or items_by_id[item_id].company))        # it = items_by_id[item_id]
 
         # if recency_bonus_fn:
