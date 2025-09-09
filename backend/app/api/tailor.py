@@ -5,6 +5,7 @@ from app.models.models import OutputModel, InputModel
 from app.services import retrieval as resume_svc
 from app.services.parseJD import parse_jd_sections
 from app.services.retrieval import score_bullets_vs_jd_sections, pick_top_items_from_scores
+from app.services.rewrite import rewrite_bullets
 
 router = APIRouter(prefix="/api", tags=["tailor"])
 
@@ -63,4 +64,5 @@ async def tailor(input: InputModel):
     # 4. rewrite bullet points
     # 5. return the final output
 
+    rewrite_bullets(parsed_JD, top_items)
     return OutputModel(rewrittenBullets=top_items)
