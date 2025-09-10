@@ -14,8 +14,8 @@ interface StateContextType {
   setResponseText: React.Dispatch<React.SetStateAction<string>>;
   topK: number;
   setTopK: React.Dispatch<React.SetStateAction<number>>;
-  includeProjects: boolean;
-  setIncludeProjects: React.Dispatch<React.SetStateAction<boolean>>;
+  rewrite: boolean;
+  setRewrite: React.Dispatch<React.SetStateAction<boolean>>;
   bulletStyle: BulletStyle;
   setBulletStyle: React.Dispatch<React.SetStateAction<BulletStyle>>;
   message: string;
@@ -49,7 +49,7 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
   const [jdText, setJdText] = useState<string>("");
   const [responseText, setResponseText] = useState<string>("");
   const [topK, setTopK] = useState<number>(3);
-  const [includeProjects, setIncludeProjects] = useState<boolean>(true);
+  const [rewrite, setRewrite] = useState<boolean>(true);
   const [bulletStyle, setBulletStyle] = useState<BulletStyle>("balanced");
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -86,7 +86,7 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     setJdText("");
     setResponseText("");
     setTopK(3);
-    setIncludeProjects(true);
+    setRewrite(true);
     setBulletStyle("balanced");
     setError("");
     setMessage("");
@@ -131,6 +131,7 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     ];
 
     const payload = {
+      rewrite: rewrite,
       job_description: jdText,
       top_x: topK,
       skills,
@@ -145,11 +146,16 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
       },
       body: JSON.stringify(payload),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          console.error("Tailor request failed with status:", res.status);
+          setMessage("Tailor request failed.");
+          setTimeout(() => setMessage(""), 3000);
+        }
+        return res.json();
+      })
       .then((data) => {
-        console.log("Tailor response:", data);
-        setMessage("Tailor response received. See console.");
-        setTimeout(() => setMessage(""), 3000);
+        setResponseText(JSON.stringify(data, null, 2));
       })
       .catch((err) => {
         console.error("Tailor error:", err);
@@ -220,8 +226,8 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     setResponseText,
     topK,
     setTopK,
-    includeProjects,
-    setIncludeProjects,
+    rewrite,
+    setRewrite,
     bulletStyle,
     setBulletStyle,
     message,

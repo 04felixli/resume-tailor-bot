@@ -13,6 +13,7 @@ class Item(BaseModel):
     bullets: List[str]
 
 class InputModel(BaseModel):
+    rewrite: bool
     job_description: str
     top_x: int
     skills: List[str]

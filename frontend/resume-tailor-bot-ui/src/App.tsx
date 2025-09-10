@@ -18,7 +18,7 @@ export default function App() {
 }
 
 function AppContent() {
-  const { error, message } = useStateContext();
+  // const { error, message } = useStateContext();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-slate-50 text-slate-900 dark:from-slate-900 dark:to-slate-950 dark:text-slate-100">
@@ -32,7 +32,7 @@ function AppContent() {
           <JDInput />
           <ActionButtons />
 
-          {error && (
+          {/* {error && (
             <div className="mt-3 rounded-lg border border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-300 px-3 py-2 text-sm">
               {error}
             </div>
@@ -41,7 +41,7 @@ function AppContent() {
             <div className="mt-3 rounded-lg border border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-900/50 dark:bg-indigo-950/30 dark:text-indigo-300 px-3 py-2 text-sm">
               {message}
             </div>
-          )}
+          )} */}
         </section>
 
         <section className="mt-6">

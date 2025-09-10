@@ -1,4 +1,6 @@
 import os
+from typing import List
+from app.models.models import Item, OutputModel
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -7,7 +9,7 @@ load_dotenv()  # Loads variables from .env
 API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
 
-def build_prompt(parsed_JD, top_items):
+def build_prompt(parsed_JD: dict[str, List[str]], top_items: List[Item]) -> str:
     jd_text = "\n".join(parsed_JD.get("requirements", []))
 
     items_text = []
@@ -31,16 +33,33 @@ def build_prompt(parsed_JD, top_items):
             Job Requirements:
             {jd_text}
 
-            Candidate's Experiences (JSON structure):
-            {items_text}
+            Candidate's Experiences (JSON schema shown below):
+            {[item.dict() for item in top_items]}
 
             Task:
-            - Rewrite ONLY the bullet texts.
-            - Keep the same order of experiences and the same order of bullets within each experience.
-            - Return the result as valid JSON with the schema shown above.
+            - Rewrite ONLY the bullet texts to align with the job requirements.
+            - Do not remove or reorder bullets.
+            - Keep the same structure and fields.
+            - Return valid JSON in this exact schema:
+
+            {{
+            "rewrittenBullets": [
+                {{
+                "id": "string",
+                "type": "string | null",
+                "company": "string | null",
+                "role": "string | null",
+                "name": "string | null",
+                "start": "string | null",
+                "end": "string | null",
+                "bullets": ["string", "string", ...]
+                }},
+                ...
+            ]
+            }}
             """
 
-def rewrite_bullets(parsed_JD, top_items):
+def rewrite_bullets(parsed_JD: dict[str, List[str]], top_items: List[Item]) -> List[Item]:
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -51,6 +70,8 @@ def rewrite_bullets(parsed_JD, top_items):
         response_format={"type": "json_object"} 
     )
 
-    print("OpenAI API response:", response)
-    # rewritten_json = response.choices[0].message.content
-    # return rewritten_json
+    content = response.choices[0].message.content
+    print("Raw content from OpenAI:", content)
+
+    parsed = OutputModel.parse_raw(content)
+    return parsed.rewrittenBullets
