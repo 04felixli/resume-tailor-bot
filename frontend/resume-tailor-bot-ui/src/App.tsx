@@ -1,6 +1,6 @@
 import "./App.css";
 import Header from "./components/Header";
-import { StateProvider, useStateContext } from "./contexts/StateContext";
+import { StateProvider } from "./contexts/StateContext";
 import FiltersGrid from "./components/FiltersGrid";
 import JDInput from "./components/JDInput";
 import Response from "./components/Response";
