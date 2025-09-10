@@ -21,10 +21,10 @@ function AppContent() {
   // const { error, message } = useStateContext();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-slate-50 text-slate-900 dark:from-slate-900 dark:to-slate-950 dark:text-slate-100">
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950 text-slate-100">
       <Header />
       <main className="mx-auto max-w-7xl px-4 py-6 md:py-10">
-        <section className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 shadow-sm p-4 md:p-6">
+        <section className="rounded-2xl border border-slate-800 bg-slate-900/70 shadow-sm p-4 md:p-6">
           <Skills />
           <Experiences />
           <Projects />

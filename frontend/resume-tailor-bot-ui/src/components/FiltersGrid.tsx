@@ -17,19 +17,17 @@ export default function FiltersGrid() {
 
   return (
     <div className="flex-col items-center justify-between mb-4">
-      <h2 className="text-lg font-semibold text-slate-700 dark:text-slate-200">
-        Settings
-      </h2>
+      <h2 className="text-lg font-semibold text-slate-200">Settings</h2>
       <div className="mt-4">
         {/* Top X items */}
-        <label className="flex flex-col rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-950/60 p-3">
-          <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+        <label className="flex flex-col rounded-xl border border-slate-800 bg-slate-950/60 p-3">
+          <span className="text-xs font-medium text-slate-400">
             Select Top X Relevant Experiences and/or Projects
           </span>
           <select
             value={topK}
             onChange={(e) => setTopK(parseInt(e.target.value))}
-            className="mt-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+            className="mt-1 rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm"
           >
             {options.map((n) => (
               <option key={n} value={n}>
@@ -39,8 +37,8 @@ export default function FiltersGrid() {
           </select>
         </label>
         {/* Include projects */}
-        <label className="mt-2 flex items-center justify-between gap-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-950/60 p-3">
-          <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+        <label className="mt-2 flex items-center justify-between gap-3 rounded-xl border border-slate-800 bg-slate-950/60 p-3">
+          <span className="text-xs font-medium text-slate-400">
             Rewrite Bullet Points for Selected Experiences and/or Projects
           </span>
           <input
